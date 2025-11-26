@@ -161,7 +161,7 @@
       if (e.key === 'ArrowUp') { if (!root.classList.contains('open')) open(); index = (index-1+allOptions.length)%allOptions.length; highlight(index); e.preventDefault(); }
       if (e.key === 'Escape') close();
     });
-    function highlight(i) { allOptions.forEach(o => o.classList.remove('active')); allOptions[i].classList.add('active'); }
+    function highlight(i) { allOptions.forEach(o => o.classList.remove('active')); allOptions[i].classList.add('active');allOptions[i].scrollIntoView({behavior: "smooth",block: "nearest"});}
 
     // ==== Initial value ====
     if (typeof setting?.initial === 'number') { labels[setting.initial]?.click(); }
