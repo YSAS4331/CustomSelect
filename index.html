@@ -54,7 +54,7 @@
   <main>
     <section id="about"><h2 data-i18n="aboutTitle"></h2><p data-i18n="about"></p></section>
     <section id="features"><h2 data-i18n="featureTitle"></h2><ul data-i18n="features"></ul></section>
-    <section id="examples"><h2>使用例</h2><p>以下のセレクトは <code class="code">data-attr</code> にオプションを指定して動作を変えられます。</p><div class="select" data-attr='"placeholder":"選択してください","search":true'><div class="option"><label>Apple</label><label>Banana</label><label>Cherry</label><label>Date</label><label>Elderberry</label></div></div><div class="select" data-attr='"placeholder":"フルーツを選んで","search":"auto","autoNum":3'><div class="option"><label>Mango</label><label>Orange</label><label>Pineapple</label><label>Strawberry</label><label>Watermelon</label></div></div></section>
+    <section id="examples"><h2 data-i18n="hd5"></h2><p>以下のセレクトは <code class="code">data-attr</code> にオプションを指定して動作を変えられます。</p><div class="select" data-attr='"placeholder":"選択してください","search":true'><div class="option"><label>Apple</label><label>Banana</label><label>Cherry</label><label>Date</label><label>Elderberry</label></div></div><div class="select" data-attr='"placeholder":"フルーツを選んで","search":"auto","autoNum":3'><div class="option"><label>Mango</label><label>Orange</label><label>Pineapple</label><label>Strawberry</label><label>Watermelon</label></div></div></section>
     <section id="data-attr"><h2>data-attrについて</h2><p>data-attrを使用することで、カスタムセレクトの動作を変更することができます。</p><table><tr><th>キー</th><th>型</th><th>説明</th></tr><tr><td>placeholder</td><td>string</td><td>未選択時に表示するテキスト</td></tr><tr><td>search</td><td>boolean / 'auto'</td><td>検索機能を有効化。'auto' は選択肢数が一定以上なら表示</td></tr><tr><td>autoNum</td><td>number</td><td>search:'auto' の閾値。デフォルトは5以上なら検索表示</td></tr><tr><td>initial</td><td>number</td><td>初期選択するインデックス</td></tr><tr><td>for</td><td>string</td><td>初期選択するID</td></tr><tr><td>disabled</td><td>boolean</td><td>セレクト全体を無効化</td></tr></table></section>
     <section id="play"><h2>試してみましょう</h2><div class="select" data-attr='' id="playSelect"><div class="option"><label>Apple</label><label>Banana</label><label>Cherry</label><label>Date</label><label>Elderberry</label></div></div><input type="text" id="playInput" placeholder="data-attrの内容を記述してみましょう"></section>
     <section id="events"><h2>イベントの受け取り</h2><p>選択が変更されると <code class="code">selectChanged</code> イベントが発火します。以下のようにして値を取得できます。</p><pre><code class="code">
@@ -80,7 +80,7 @@
         aboutTitle: "What is CustomSelect.js?",
         about: "CustomSelect.js is a lightweight library designed to make standard select boxes more user-friendly and visually customizable. <br>It supports features such as placeholders, search functionality, keyboard operation, and event notifications with zero dependencies.",
         featureTitle: "main features",
-        features: '<li>Placeholder display</li><li>Search function (supports fuzzy search)</li><li>Keyboard operation (Enter / ↑↓ / Escape)</li><li>Triggering the <code class="code">selectChanged</code> event</li><li>Initial value setting and disable option</li>'
+        features: '<li>Placeholder display</li><li>Search function (supports fuzzy search)</li><li>Keyboard operation (Enter / ↑↓ / Escape)</li><li>Triggering the <code class="code">selectChanged</code> event</li><li>Initial value setting and disable option</li>',
       },
       ja: {
         hd1: "CustomSelect.js デモページ",
