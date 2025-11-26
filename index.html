@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="hd1">CustomSelect.js デモページ</title>
+  <style>
+    :root{--accent:#4fa3ff;--card:#ffffff;--text-main:#333;--text-sub:#555;--text-muted:#666;--text-light:#888;--bg-main:#f9fafc;--bg-body:#f2f4f8;--bg-white:#ffffff;--bg-white-2:#f3f6fa;--bg-hover:#f7f9fc;--bg-warn:#fffbe6;--bg-error:#fff0f0;--bg-code:#f5f5f5;--bg-code-focus:#fdfdfd;--border-log:#0078d7;--border-info:#2b88d8;--border-warn:#f2c744;--border-error:#e81123;--custom-font-size:100%;--focus-color:#005FCC;}
+    body{font-family:"Segoe UI","Hiragino Sans",sans-serif;margin:0;padding:0;background:var(--bg-main);color:var(--text-main);line-height:1.6;overflow:auto;}
+    header{background:#0078d7;color:#fff;padding:2rem 1rem;margin-bottom:0;text-align:center;}
+    header h1{margin:0;font-size:2rem;}
+    header p{margin-top:0.5rem;font-size:1rem;}
+    nav {position:sticky;top:0;z-index:1000;background:#0078d7;margin:0;padding:0;}
+    nav ul{list-style:none;padding:0;margin:0;display:flex;justify-content:center;gap:1.5rem;}
+    nav a{color:#fff;text-decoration:none;font-weight:bold;}
+    nav a:hover{text-decoration:underline;}
+    main{max-width:900px;margin:2rem auto;padding:0 1rem;}
+    section{margin-bottom:2rem;padding:1.5rem;background:#fff;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    section h2{margin-top:0;color:#0078d7;font-size:1.4rem;}
+    ul{padding-left:1.2rem;}
+    ul li{margin-bottom:0.5rem;}
+    pre{background:#272822;color:#f8f8f2;padding:1rem;border-radius:4px;overflow-x:auto;}
+    .code{font-family:Consolas,monospace;font-size:0.9rem;}
+    table{width:100%;border-collapse:collapse;margin-top:1rem;}
+    table th,table td{border:1px solid #ddd;padding:0.6rem;text-align:left;}
+    table th{background:var(--bg-white-2);color:var(--text-sub);}
+    footer{background:#333;color:#fff;text-align:center;padding:1rem;margin-top:3rem;}
+    footer p{margin:0;font-size:0.9rem;}
+    .select{position:relative;width:260px;background:var(--card);color:var(--text-main);padding:0.6rem 1rem;border-radius:10px;cursor:pointer;user-select:none;margin:1rem 0;}
+    .select-dis{display:flex;justify-content:space-between;align-items:center;}
+    .select-arrow{transition:transform 0.25s;}
+    .open .select-arrow{transform:rotate(180deg);}
+    .option{position:absolute;top:calc(100% + 5px);left:0;width:100%;background:var(--card);color:var(--text-main);border-radius:10px;padding:5px 0;box-shadow:0 6px 18px rgba(0,0,0,0.35);display:none;z-index:20;max-height:200px;overflow-x:hidden;overflow-y:auto;}
+    .open .option{display:block;}
+    .option label{display:block;padding:0.6rem 1rem;cursor:pointer;}
+    .option label:hover{background:rgba(79,163,255,0.15);}
+    .option label.active{background:rgba(79,163,255,0.35);}
+    .option .select-search{position:sticky;top:0;z-index:1;margin:0;width:100%;background:var(--card);color:var(--text-main);padding:0.6rem 1rem;border-radius:10px;border:2px solid transparent;outline:none;user-select:none;transition:border-color 0.25s,box-shadow 0.25s;}
+    .option .select-search:not(.NoBorder):focus{border-color:rgba(79,163,255,0.6);box-shadow:0 0 0 3px rgba(79,163,255,0.25);}
+    .option .select-search::placeholder{color:var(--text-sub);opacity:0.7;}
+    .option .select-search:disabled{background:var(--bg-white-2);color:var(--text-light);cursor:not-allowed;}
+    input[type="text"]{width:80%;padding:0.6rem 1rem;font-size:1rem;color:var(--text-main);background:var(--card);border:2px solid transparent;border-radius:10px;outline:none;transition:border-color 0.25s,box-shadow 0.25s;}
+    input[type="text"]::placeholder{color:var(--text-sub);opacity:0.7;}
+    input[type="text"]:focus{border-color:rgba(79,163,255,0.6);box-shadow:0 0 0 3px rgba(79,163,255,0.25);}
+    input[type="text"]:disabled{background:var(--bg-white-2);color:var(--text-light);cursor:not-allowed;}
+    .msgParent {background:rgba(0,0,0,0.75);padding:5px;margin:0;position:fixed;right:50px;bottom:50px;width:auto 10px;aspect-ratio:3/1;border-radius:12px;}
+    .msgP {color:white;}
+    .mdc {background:#f2f2f2;border-radius:15px;padding:2px;font-style:italic;font-family:monospace;}
+    .mdcnb {background:none;}
+  </style>
+</head>
+<body>
+  <header><h1 data-i18n="hd1"></h1><p data-i18n="hd2"></p></header>
+  <nav><ul><li><a href="#about" data-i18n="hd3"></a></li><li><a href="#features" data-i18n="hd4"></a></li><li><a href="#examples" data-i18n="hd5"></a></li><li><a href="#data-attr">data-attr</a></li><li><a href="#play" data-i18n="hd6"></a></li><li><a href="#events" data-i18n="hd7"></a></li></ul></nav>
+  <main>
+    <section id="about"><h2 data-i18n="aboutTitle"></h2><p data-i18n="about"></p></section>
+    <section id="features"><h2 data-i18n="featureTitle"></h2><ul data-i18n="features"></ul></section>
+    <section id="examples"><h2>使用例</h2><p>以下のセレクトは <code class="code">data-attr</code> にオプションを指定して動作を変えられます。</p><div class="select" data-attr='"placeholder":"選択してください","search":true'><div class="option"><label>Apple</label><label>Banana</label><label>Cherry</label><label>Date</label><label>Elderberry</label></div></div><div class="select" data-attr='"placeholder":"フルーツを選んで","search":"auto","autoNum":3'><div class="option"><label>Mango</label><label>Orange</label><label>Pineapple</label><label>Strawberry</label><label>Watermelon</label></div></div></section>
+    <section id="data-attr"><h2>data-attrについて</h2><p>data-attrを使用することで、カスタムセレクトの動作を変更することができます。</p><table><tr><th>キー</th><th>型</th><th>説明</th></tr><tr><td>placeholder</td><td>string</td><td>未選択時に表示するテキスト</td></tr><tr><td>search</td><td>boolean / 'auto'</td><td>検索機能を有効化。'auto' は選択肢数が一定以上なら表示</td></tr><tr><td>autoNum</td><td>number</td><td>search:'auto' の閾値。デフォルトは5以上なら検索表示</td></tr><tr><td>initial</td><td>number</td><td>初期選択するインデックス</td></tr><tr><td>for</td><td>string</td><td>初期選択するID</td></tr><tr><td>disabled</td><td>boolean</td><td>セレクト全体を無効化</td></tr></table></section>
+    <section id="play"><h2>試してみましょう</h2><div class="select" data-attr='' id="playSelect"><div class="option"><label>Apple</label><label>Banana</label><label>Cherry</label><label>Date</label><label>Elderberry</label></div></div><input type="text" id="playInput" placeholder="data-attrの内容を記述してみましょう"></section>
+    <section id="events"><h2>イベントの受け取り</h2><p>選択が変更されると <code class="code">selectChanged</code> イベントが発火します。以下のようにして値を取得できます。</p><pre><code class="code">
+      const sel = document.querySelector('.select');
+      cSelect.setup(sel);
+      sel.addEventListener('selectChanged', e => {
+        console.log('選択された値:', e.detail.value);
+      });
+    </code></pre><h3>イベントログ</h3><div id="log">まだ選択されていません</div></section>
+  </main>
+  <footer><p>&copy; 2025 CustomSelect.js Demo Page</p></footer>
+  <script src="CustomSelect.js"></script>
+  <script>
+    const translate = {
+      en: {
+        hd1: "CustomSelect.js Demo page",
+        hd2: 'You can check the behavior of the custom select component "CustomSelect.js," which extends the standard &lt;select&gt; element.',
+        hd3: "overview",
+        hd4: "feature",
+        hd5: "examples",
+        hd6: "try",
+        hd7: "events",
+        aboutTitle: "What is CustomSelect.js?",
+        about: "CustomSelect.js is a lightweight library designed to make standard select boxes more user-friendly and visually customizable. <br>It supports features such as placeholders, search functionality, keyboard operation, and event notifications with zero dependencies.",
+        featureTitle: "main features",
+        features: '<li>Placeholder display</li><li>Search function (supports fuzzy search)</li><li>Keyboard operation (Enter / ↑↓ / Escape)</li><li>Triggering the <code class="code">selectChanged</code> event</li><li>Initial value setting and disable option</li>'
+      },
+      ja: {
+        hd1: "CustomSelect.js デモページ",
+        hd2: "標準の &lt;select&gt; を拡張したカスタムセレクトコンポーネント「CustomSelect.js」の動作を確認できます。",
+        hd3: "概要",
+        hd4: "機能",
+        hd5: "使用例",
+        hd6: "試す",
+        hd7: "イベント",
+        aboutTitle: "CustomSelect.jsとは？",
+        about: "CustomSelect.js は、標準のセレクトボックスをより使いやすく、見た目も自由にカスタマイズできるようにした軽量ライブラリです。<br>依存関係無しでプレースホルダー、検索機能、キーボード操作、イベント通知などをサポートしています。",
+        featureTitle: "主な機能",
+        features: '<li>プレースホルダー表示</li><li>検索機能（曖昧検索対応）</li><li>キーボード操作（Enter / ↑↓ / Escape）</li><li>選択イベント <code class="code">selectChanged</code> の発火</li><li>初期値設定や無効化オプショsン</li>'
+      }
+    }
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get('lang') || 'en';
+    const langreflect = lg => {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        let string = translate[lg]?.[key] || translate.en[key];
+        if (el.tagName !== 'TITLE') {
+          if (key.startsWith('hd')) {
+            string = string.replace(/(CustomSelect\.js)/g, '<code class="mdc mdcnb">$1</code>');
+          } else {
+            string = string.replace(/(CustomSelect\.js|data-attr)/g, '<code class="mdc">$1</code>');
+          }
+        }
+        el.innerHTML = string;
+      });
+    }
+    langreflect(lang);
+    const c = el => document.createElement(el);
+    const showMsg = msg => {
+      const div = c('div');
+      div.classList.add('msgParent');
+      const msgel = c('p');
+      msgel.classList.add('msgP');
+      msgel.textContent = msg;
+      div.appendChild(msgel);
+      document.body.appendChild(div);
+      setTimeout(() => {
+        div.remove();
+      }, 1000);
+    }
+    const log = document.getElementById('log');
+    const logDefault = log.textContent;
+    document.querySelectorAll('.select').forEach(sel => {
+      cSelect.setup(sel);
+      sel.addEventListener('selectChanged', e => {
+        if (log.textContent === logDefault) {
+          log.textContent = `選択された値: ${e.detail.value}`
+        } else {
+          log.innerHTML += `<br>選択された値: ${e.detail.value}`;
+        }
+      });
+    });
+    function debounce(f,d) {
+      let timer;
+      return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          f.apply(this, args);
+        }, d);
+      };
+    }
+    const playSelect = document.getElementById('playSelect');
+    const playInput = document.getElementById('playInput');
+    playInput.addEventListener('input', debounce((e) => {
+      playSelect.dataset.attr = playInput.value;
+      try {
+        cSelect.update(playSelect);
+      } catch(e) {
+        showMsg("形式が異なります");
+      }
+    }, 500));
+  </script>
+</body>
+</html>
