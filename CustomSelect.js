@@ -166,6 +166,8 @@
     // ==== Initial value ====
     if (typeof setting?.initial === 'number') { labels[setting.initial]?.click(); }
     if (setting?.for) root.querySelector(`#${setting.for}`)?.click();
+
+    if (useSearch) return searchInput;
   }
 
   // ==== Update ====
